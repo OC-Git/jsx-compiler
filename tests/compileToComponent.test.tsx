@@ -50,3 +50,21 @@ test("compiles a script and uses component props with var", () => {
   render(<Component b="hihi" />);
   expect(screen.getByRole("div").textContent).toMatch("hihi 2");
 });
+
+test("compiles more complex a script", () => {
+  const script = `
+    return (
+        <>
+        {list.map(item => (<div key={item} role={"role-"+item}>{item} {p.b}</div>))}
+        </>
+    )`;
+  const ctx = {
+    list: ["a", "b", "c"],
+  };
+
+  const compiler = new Compiler();
+  const Component = compiler.compileToComponent(ctx, script, "p");
+
+  render(<Component b="hihi" />);
+  expect(screen.getByRole("role-b").textContent).toMatch("b hihi");
+});
