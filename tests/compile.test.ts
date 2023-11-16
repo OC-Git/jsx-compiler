@@ -5,7 +5,7 @@ test('compiles a simple script', () => {
         return <div>huhu</div>
     `
 
-    const f = Compiler.compile.bind(Compiler);
-    const js = f(script);
+    const compiler = new Compiler();
+    const js = compiler.compileToString(script);
     expect(js.trim()).toBe(`return React.createElement("div", null, "huhu")`);
   });

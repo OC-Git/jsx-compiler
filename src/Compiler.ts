@@ -23,20 +23,14 @@ const astTypes= {
 const enums= [tokenTypes, astTypes]
 
 
-export default {
-  /**
-   * Compiler Options
-   */
-  pragma: "React.createElement",
-  pragmaFrag: "React.Fragment",
-  maxRecursiveCalls: 1000,
-  addUseStrict: false,
-  options: {},
-
-
-  setOptions: function(options) {
+export default class Compiler {
+  constructor(options = {}) {
+    this.pragma = "React.createElement";
+    this.pragmaFrag = "React.Fragment";
+    this.maxRecursiveCalls = 1000;
+    this.addUseStrict = false;
     this.options = options;
-  },
+  };
 
   /**
    * Compile JSX to JS
@@ -44,7 +38,7 @@ export default {
    * @param {string} input
    * @return {string}
    */
-  compile: function (input) {
+  compileToString(input) {
     // If code appears to be minimized return it without attempting to parse it.
     if (this.isMinimized(input)) {
       return input;
@@ -68,7 +62,7 @@ export default {
     // Compiler Step 4 (Code Generation) - Convert AST to Code
     var output = this.codeGenerator(ast, input);
     return output;
-  },
+  }
 
   /**
    * Helper function to return line/column numbers when an error occurs
@@ -77,7 +71,7 @@ export default {
    * @param {int} pos
    * @return {string}
    */
-  getTextPosition: function (input, pos) {
+  getTextPosition(input, pos) {
     var lines = input.substring(0, pos).split("\n");
     var lineCount = lines.length;
     var line = lines[lineCount - 1];
@@ -89,7 +83,7 @@ export default {
       ", Line: " +
       line.trim()
     );
-  },
+  }
 
   /**
    * Check if the contents of a script appear to be minimized. If so it's likely JavaScript
@@ -99,7 +93,7 @@ export default {
    * @param {string} input
    * @return {bool}
    */
-  isMinimized: function (input) {
+  isMinimized(input) {
     if (
       input.indexOf("\n") === -1 &&
       (input.indexOf("if(") !== -1 || input.indexOf("}render(){return") !== -1)
@@ -107,7 +101,7 @@ export default {
       return true;
     }
     return false;
-  },
+  }
 
   /**
    * Helper function that gets called when a '<' character is
@@ -118,7 +112,7 @@ export default {
    * @param {number} length
    * @returns {bool}
    */
-  isExpression: function (input, current, length) {
+  isExpression(input, current, length) {
     var pos = current + 2;
     var foundName = false;
     while (pos < length) {
@@ -148,7 +142,7 @@ export default {
       }
     }
     return false;
-  },
+  }
 
   /**
    * Compiler Step 1 - Remove Comments from the Code
@@ -165,7 +159,7 @@ export default {
    * @param {string} input
    * @return {string}
    */
-  removeComments: function (input) {
+  removeComments(input) {
     var length = input.length,
       newInput = new Array(length),
       state = {
@@ -293,7 +287,7 @@ export default {
       current++;
     }
     return newInput.join("");
-  },
+  }
 
   /**
    * Compiler Step 2 (Lexical Analysis) - Convert JSX Code to an array of tokens.
@@ -305,7 +299,7 @@ export default {
    * @param {string} input
    * @return {array}
    */
-  tokenizer: function (input, compiler) {
+  tokenizer(input, compiler) {
     var length = input.length,
       current = 0,
       tokens = [],
@@ -833,7 +827,7 @@ export default {
       current++;
     }
     return tokens;
-  },
+  }
 
   /**
    * Compiler Step 3 (Syntactic Analysis) - Convert Tokens to an Abstract Syntax Tree (AST)
@@ -842,7 +836,7 @@ export default {
    * @param {string} input Original input is passed to allow for helpful error messages
    * @return {object}
    */
-  parser: function (tokens, input) {
+  parser(tokens, input) {
     var current = 0,
       ast = {
         type: astTypes.program,
@@ -1086,7 +1080,7 @@ export default {
       );
     }
     return ast;
-  },
+  }
 
   /**
    * Compiler Step 4 (Code Generation) - Convert AST to Code.
@@ -1104,7 +1098,7 @@ export default {
    * @param {string} input
    * @return {string}
    */
-  codeGenerator: function (ast, input) {
+  codeGenerator(ast, input) {
     var addUseStrict = this.addUseStrict;
 
     // Default to use `React.createElement`, however if a code hint for
@@ -1364,5 +1358,5 @@ export default {
           );
       }
     }
-  },
+  }
 };
