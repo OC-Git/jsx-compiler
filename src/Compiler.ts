@@ -1,5 +1,7 @@
 // @ts-nocheck
 
+import React from "react"
+
 const tokenTypes = {
   js: 0,
   e_start: 1,
@@ -33,7 +35,20 @@ export default class Compiler {
   };
 
   /**
-   * Compile JSX to JS
+   * Compile JSX string to JSX component
+   *
+   * @param {ctx} any An object whose attributes will be available in the component
+   * @param {string} input the component source
+   * @return {JSXElement} the component
+   */
+  compileToComponent(ctx, input) {
+    const body = this.compileToString(input);
+    const func = Function(...Object.keys(ctx), "React", "props", body);
+    return (props: any) => func(...Object.values(ctx), React, props);
+  }
+
+  /**
+   * Compile JSX string to JS string
    *
    * @param {string} input
    * @return {string}
