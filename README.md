@@ -5,7 +5,7 @@ This work is in very large parts based upon the work of the
 project and their
 [jsx-loader](https://github.com/dataformsjs/dataformsjs/blob/master/docs/jsx-loader.md)!
 
-Here their coimpiler is merely re-package to be available standalone.
+Here their compiler is merely re-package to be available standalone.
 
 ## Installation
 

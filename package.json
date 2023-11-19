@@ -1,5 +1,5 @@
 {
-  "name": "jsx-compiler",
+  "name": "react-jsx-compiler",
   "version": "1.0.0",
   "description": "A JSX compiler for dynamic React apps",
   "main": "index.js",

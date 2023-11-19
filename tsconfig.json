@@ -9,5 +9,9 @@
     "declaration": true,
     "jsx": "react",
     "skipLibCheck": true                                 /* Skip type checking all .d.ts files. */
-  }
+  },
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }
