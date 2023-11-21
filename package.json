@@ -1,8 +1,10 @@
 {
   "name": "react-jsx-compiler",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "A JSX compiler for dynamic React apps",
-  "main": "index.js",
+  "main": "./dist/src/index.js",
+  "module": "./dist/src/index.mjs",
+  "types": "./dist/src/index.d.ts",
   "scripts": {
     "test": "jest",
     "prepublish": "tsc"

@@ -1,6 +1,6 @@
 // @ts-nocheck
 
-import React from "react"
+import React, { ComponentType, ReactNode } from "react"
 
 const tokenTypes = {
   js: 0,
@@ -41,10 +41,10 @@ export default class Compiler {
    * @param {string} input the component source
    * @return {JSXElement} the component
    */
-  compileToComponent(ctx, input, propsVar="props") {
+  compileToComponent(ctx, input, propsVar="props"):React.FC<any> {
     const body = this.compileToString(input);
     const func = Function(...Object.keys(ctx), "React", propsVar, body);
-    return (props: any) => func(...Object.values(ctx), React, props);
+    return ((props: any) => func(...Object.values(ctx), React, props));
   }
 
   /**
